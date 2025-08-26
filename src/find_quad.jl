@@ -42,7 +42,7 @@ function find_quad(
     wq[4] = s * t
   else
     wq = @.(1 / distq^m) # 不足4点时，退化为idw插值
-    wq .= wk ./ sum(wk)
+    wq .= wq ./ sum(wq)
   end
   return idxq, distq, angq, wq  # 长度为4
 end

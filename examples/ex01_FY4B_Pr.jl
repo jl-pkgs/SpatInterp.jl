@@ -1,6 +1,6 @@
 using NetCDFTools: nc_read, st_dims
 using GLMakie, MakieLayers
-using SpatInterp
+using SpatInterp, JLD2
 using SpatRasters: SpatRaster, bbox, make_rast, bbox2dims, rast
 
 import MakieLayers: imagesc, imagesc!
