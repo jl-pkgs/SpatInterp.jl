@@ -41,15 +41,20 @@ end
 
 已经按照距离进行了排序。
 """
-function find_neighbor(ra::SpatRaster{FT}, X; nmax::Int=20, radius::Real=100, do_angle=true) where {
-  FT<:Real
-}
+function find_neighbor(ra::SpatRaster{FT}, X;
+  fast=false, nmax::Int=20, radius::Real=100, do_angle=true) where {FT<:Real}
+
   Xt = collect(X')
-  tree = BallTree(Xt, Haversine(6371.0); reorder=false)
+  if fast
+    tree = KDTree(Xt; reorder=true, leafsize=128*2)
+    printstyled("Note: radius should be in degree in fast mode!\n", color=:blue, bold=true)
+  else
+    tree = BallTree(Xt, Haversine(6371.0); leafsize=64 * 1, reorder = true)
+  end
 
   lon, lat = st_dims(ra)
   lon, lat = FT.(lon), FT.(lat)
-  
+
   nlon, nlat = length(lon), length(lat)
   neighbor = Neighbor(nmax, (nlon, nlat); source=st_points(X), lon, lat, FT)
   (; count, index, dist, angle) = neighbor
@@ -81,7 +86,6 @@ function find_neighbor(ra::SpatRaster{FT}, X; nmax::Int=20, radius::Real=100, do
           angle[i, j, c] = angle_azimuth_sphere(p0, p1; to_degree=true)
         end
       end
-
 
     end
   end

@@ -1,17 +1,17 @@
-function interp_weight(neighbor::Neighbor{T1,N}, y::AbstractArray{T2}, target::SpatRaster;
-  progress=true, ignored...) where {T1, T2<:Real,N}
+function interp_weight(neighbor::Neighbor{T,N}, y::AbstractArray{T}, target::SpatRaster;
+  progress=true, ignored...) where {T<:AbstractFloat,N}
 
   ntime = size(y, 2)
   lon, lat = st_dims(target)
   nlon, nlat = length(lon), length(lat)
-  
+
   # 综合考虑 T1 和 T2，选择合适的计算类型
-  T = promote_type(T1, T2)
+  # T = promote_type(T1, T2)
   R = zeros(T, nlon, nlat, ntime)
 
   (; count, index, weight) = neighbor
-  ∅ = zero(T)
   p = Progress(nlat)
+
   @inbounds @threads for j in 1:nlat
     progress && next!(p)
     for i in 1:nlon
@@ -19,24 +19,37 @@ function interp_weight(neighbor::Neighbor{T1,N}, y::AbstractArray{T2}, target::S
       n_control = count[i, j]
       inds = @view index[i, j, 1:n_control]
       ws = @view weight[i, j, 1:n_control]
-
-      for k in 1:ntime
-        ∑ = zero(T)
-        ∑w = zero(T)
-
-        for l in 1:n_control # control points
-          _i = inds[l]
-          yᵢ = y[_i, k]
-          notnan = yᵢ == yᵢ
-          w_val = ws[l]
-          ∑ += ifelse(notnan, yᵢ * w_val, ∅)
-          ∑w += ifelse(notnan, w_val, ∅)
-        end
-        R[i, j, k] = ∑ / ∑w
-      end
+      _Y = @view y[inds, :] # target
+      _Z = @view R[i, j, :]
+      _weighted_mean!(_Z, ws, _Y)
     end
   end
   rast(R, target)
+end
+
+
+"""
+- `Z` : [ntime]
+- `Y` : [n_control, ntime]
+- `ws`: [n_control]
+"""
+function _weighted_mean!(Z::AbstractVector{T}, ws::AbstractVector{T}, Y::AbstractMatrix{T}) where {T<:AbstractFloat}
+  n_control, ntime = size(Y)
+  # Φ::T = T(0)
+  @inbounds @simd for k in 1:ntime
+    ∑::T = T(0)
+    ∑w::T = T(0)
+
+    for l in 1:n_control # control points
+      yᵢ::T = Y[l, k]
+      w::T = ws[l]
+      
+      mask = yᵢ == yᵢ  # 非NaN检查
+      ∑w += ifelse(mask, w, T(0))
+      ∑ = ifelse(mask, muladd(yᵢ, w, ∑), ∑)
+    end
+    Z[k] = ifelse(∑w > T(0), ∑ / ∑w, T(0))
+  end
 end
 
 export interp_weight

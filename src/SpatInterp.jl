@@ -22,6 +22,8 @@ st_points(X::AbstractMatrix{T}) where {T} = map(p -> Point{2, T}(p[1], p[2]), ea
 
 include("bilinear_irregular.jl")
 include("angle.jl")
+
+include("frac_dist.jl")
 include("find_neighbors.jl")
 include("find_quad.jl")
 

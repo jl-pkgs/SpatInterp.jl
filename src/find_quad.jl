@@ -31,7 +31,7 @@ function find_quad(
     end
   end
   n = sum(idxq .!== 0)
-
+  t = s = T(0)
   if n == 4
     # 采用bilinear, 计算权重，点的顺序要对
     _points = @view source[idxq]
@@ -40,8 +40,15 @@ function find_quad(
     wq[2] = s * (1 - t)
     wq[3] = (1 - s) * t
     wq[4] = s * t
-  else
-    wq = @.(1 / distq^m) # 不足4点时，退化为idw插值
+    # if sum(isnan.(wq)) >=2 
+    #   println("$out_x, $out_y")
+    #   jldsave("debug.jld2"; _points, out_x, out_y, t, s, wq)
+    #   error("stop here")
+    # end
+  end
+
+  if n < 4 || isnan(t + s) #
+    wq = @.(1 / distq^m) # 不足4点，或bilinear求解失败时; 退化为idw插值
     wq .= wq ./ sum(wq)
   end
   return idxq, distq, angq, wq  # 长度为4
@@ -50,7 +57,7 @@ end
 
 function find_quad(neighbor::Neighbor{FT,3}; progress::Bool=true) where {FT}
   (; source, lon, lat) = neighbor
-  neighbor4 = Neighbor(4, neighbor.dims; source, lon, lat) # 4象限邻居
+  neighbor4 = Neighbor(4, neighbor.dims; FT, source, lon, lat) # 4象限邻居
   (; count, index, dist, angle, weight) = neighbor4
   nlon, nlat = size(count)
 
