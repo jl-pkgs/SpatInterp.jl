@@ -4,6 +4,7 @@ authors = ["Dongdong Kong <kongdd@users.noreply.github.com>"]
 version = "0.1.0"
 
 [deps]
+GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 NearestNeighbors = "b8a86587-4115-5ab1-83bc-aa920d37bbce"
 SpatRasters = "25a4c9b9-c310-4d6e-b9a7-fa79274760a1"
@@ -12,6 +13,7 @@ SpatRasters = "25a4c9b9-c310-4d6e-b9a7-fa79274760a1"
 SpatRasters = {url = "https://github.com/jl-pkgs/SpatRasters.jl"}
 
 [compat]
+GeometryBasics = "0.5.10"
 LinearAlgebra = "1.11.0"
 NearestNeighbors = "0.4.22"
 SpatRasters = "0.1.3"
