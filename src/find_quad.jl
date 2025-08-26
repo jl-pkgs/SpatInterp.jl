@@ -48,30 +48,36 @@ function find_quad(
 end
 
 
-function find_quad(neighbor::Neighbor{FT,3}) where {FT}
+function find_quad(neighbor::Neighbor{FT,3}; progress::Bool=true) where {FT}
   (; source, lon, lat) = neighbor
   neighbor4 = Neighbor(4, neighbor.dims; source, lon, lat) # 4象限邻居
   (; count, index, dist, angle, weight) = neighbor4
   nlon, nlat = size(count)
 
-  @views @inbounds for i in 1:nlon, j in 1:nlat
-    n = neighbor.count[i, j]
-    n == 0 && continue
+  p = Progress(nlat)
 
-    out_x, out_y = lon[i], lat[i]
+  @views @inbounds for j in 1:nlat
+    progress && next!(p)
+    for i in 1:nlon
 
-    _index = neighbor.index[i, j, 1:n]
-    _angle = neighbor.angle[i, j, 1:n]
-    _dist = neighbor.dist[i, j, 1:n]
-    _weight = neighbor.weight[i, j, 1:n]
+      n = neighbor.count[i, j]
+      n == 0 && continue
 
-    idxq, distq, angq, wq = find_quad(source, out_x, out_y, _index, _angle, _dist, _weight)
+      out_x, out_y = lon[i], lat[j]
 
-    count[i, j] = sum(idxq .!== 0)
-    index[i, j, :] .= idxq
-    angle[i, j, :] .= angq
-    dist[i, j, :] .= distq
-    weight[i, j, :] .= wq
+      _index = neighbor.index[i, j, 1:n]
+      _angle = neighbor.angle[i, j, 1:n]
+      _dist = neighbor.dist[i, j, 1:n]
+      _weight = neighbor.weight[i, j, 1:n]
+
+      idxq, distq, angq, wq = find_quad(source, out_x, out_y, _index, _angle, _dist, _weight)
+
+      count[i, j] = sum(idxq .!== 0)
+      index[i, j, :] .= idxq
+      angle[i, j, :] .= angq
+      dist[i, j, :] .= distq
+      weight[i, j, :] .= wq
+    end
   end
   neighbor4
 end

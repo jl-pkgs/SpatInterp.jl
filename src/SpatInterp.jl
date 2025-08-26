@@ -2,10 +2,11 @@ module SpatInterp
 
 using GeometryBasics
 using Parameters
-using SpatRasters: SpatRaster, st_dims
+using SpatRasters: SpatRaster, st_dims, rast
 using Distances: Haversine
 using NearestNeighbors
-
+using Base.Threads
+using ProgressMeter
 
 export Point, st_points
 
@@ -19,11 +20,12 @@ st_points(X::AbstractMatrix{T}) where {T} = map(p -> Point{2, T}(p[1], p[2]), ea
 #   return getfield(p, s)  # fallback for other fields
 # end
 
-
 include("bilinear_irregular.jl")
 include("angle.jl")
 include("find_neighbors.jl")
 include("find_quad.jl")
+
+include("interp.jl")
 
 # include("utilize.jl")
 # include("get_fractional.jl")
