@@ -4,6 +4,11 @@ export Neighbor, find_neighbor
 @with_kw struct Neighbor{FT,N}
   nmax::Int = 24
   dims::Tuple = ()
+  
+  source::Union{Nothing,Vector{Point{2,FT}}} = nothing # donor points
+  lon::AbstractVector{FT} = 1:dims[1]                # target raster
+  lat::AbstractVector{FT} = 1:dims[2] 
+
   count::AbstractArray{Integer} = zeros(Int, dims...)
   index::AbstractArray{Integer,N} = zeros(Int, dims..., nmax)
   "distance (km)"
@@ -13,9 +18,9 @@ export Neighbor, find_neighbor
   weight::AbstractArray{FT,N} = zeros(FT, dims..., nmax)
 end
 
-function Neighbor(nmax::Int, dims::Tuple=(); FT=Float64)
+function Neighbor(nmax::Int, dims::Tuple=(); FT=Float64, source=nothing, kw...)
   N = length(dims) + 1
-  Neighbor{FT,N}(; nmax, dims)
+  Neighbor{FT,N}(; source, nmax, dims, kw...)
 end
 
 
@@ -39,7 +44,7 @@ function find_neighbor(ra::SpatRaster, X; nmax::Int=20, radius::Real=100, do_ang
 
   lon, lat = st_dims(ra)
   nlon, nlat = length(lon), length(lat)
-  neighbor = Neighbor(nmax, (nlon, nlat))
+  neighbor = Neighbor(nmax, (nlon, nlat); source=st_points(X), lon, lat)
   (; count, index, dist, angle) = neighbor
 
   for i in 1:nlon, j in 1:nlat

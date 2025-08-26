@@ -48,6 +48,17 @@ function not_valid_root(x::T; min::T=T(0), max::T=T(1)) where {T}
 end
 
 
+function solve_another_frac_dist(t::T, y_1::T, y_2::T, y_3::T, y_4::T, out_y::T) where T<:Real
+  y_21 = y_2 - y_1
+  y_43 = y_4 - y_3
+
+  denominator = y_43 * t - y_21 * t + y_3 - y_1
+  numerator = out_y - y_1 - y_21 * t
+  s = numerator / denominator
+  (abs(denominator) < eps(T) || not_valid_root(s)) && (s = T(NaN))
+  return s
+end
+
 """
 获取不规则情况的分数距离
 """
@@ -83,18 +94,6 @@ function frac_dist_parallellogram(p1::P, p2::P, p3::P, out_x::T, out_y::T) where
 end
 
 
-function solve_another_frac_dist(t::T, y_1::T, y_2::T, y_3::T, y_4::T, out_y::T) where T<:Real
-  y_21 = y_2 - y_1
-  y_43 = y_4 - y_3
-
-  denominator = y_43 * t - y_21 * t + y_3 - y_1
-  numerator = out_y - y_1 - y_21 * t
-  s = numerator / denominator
-  (abs(denominator) < eps(T) || not_valid_root(s)) && (s = T(NaN))
-  return s
-end
-
-
 function frac_dist(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y::T) where {T<:Real,N,P<:Point{N,T}}
   t, s = frac_dist_irregular(p1, p2, p3, p4, out_x, out_y)
   # vertical parallel
@@ -107,7 +106,6 @@ function frac_dist(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y::T) where {T<:Rea
   end
   return t, s
 end
-
 
 
 export frac_dist_irregular, frac_dist_uprights_parallel, frac_dist_parallellogram

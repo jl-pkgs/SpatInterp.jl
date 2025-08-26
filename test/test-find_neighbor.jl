@@ -1,8 +1,10 @@
+using Bilinear, Test
+import SpatRasters
 using SpatRasters: bbox, make_rast, st_dims
-using Statistics
-using RTableTools
+using RTableTools, Statistics
 
-@testset "find_neighbor" begin
+
+begin
   indir = "$(@__DIR__)/.." |> abspath
   d = fread("$indir/data/prcp_st174_shiyan.csv")
 
@@ -11,7 +13,10 @@ using RTableTools
   # Y = repeat(y, outer=(1, 24 * 30))
   b = bbox(109.5, 31.5, 112 - 0.5, 33.5)
   target = make_rast(; b, cellsize=0.01)
+end
 
+
+@testset "find_neighbor" begin
   neighbor = find_neighbor(target, X; nmax=24, radius=20, do_angle=true)
   @test mean(neighbor.count) >= 5
 
@@ -19,11 +24,21 @@ using RTableTools
   @test mean(neighbor.count) >= 19
 end
 
-# # mean(neighbor.angle)
-# using GLMakie, MakieLayers
-# neighbor = find_neighbor(target, X; nmax=20, radius=20, do_angle=true)
 
+@testset "nearest_per_quadrant" begin
+  ## nearest_per_quadrant
+  neighbor = find_neighbor(target, X; nmax=24, radius=25, do_angle=true)
+  neighbor4 = find_quad(neighbor)
+  @test mean(neighbor4.count) >= 2.5
+end
+
+# using GLMakie, MakieLayers
 # begin
 #   lon, lat = st_dims(target)
-#   imagesc(lon, lat, neighbor.count)
+
+#   fig = Figure(; size=(1000, 500))
+#   imagesc!(fig[1, 1], lon, lat, neighbor.count)
+#   imagesc!(fig[1, 2], lon, lat, neighbor4.count)
+#   fig
 # end
+# 

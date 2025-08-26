@@ -7,7 +7,9 @@ using Distances: Haversine
 using NearestNeighbors
 
 
-export Point
+export Point, st_points
+
+st_points(X::AbstractMatrix{T}) where {T} = map(p -> Point{2, T}(p[1], p[2]), eachrow(X))
 
 # @inline Base.getproperty(p::Point{T}, ::Symbol{Val{:x}}) where {T} = p[1]
 # @inline function Base.getproperty(p::Point{T}, s::Symbol) where {T}
@@ -21,6 +23,7 @@ export Point
 include("bilinear_irregular.jl")
 include("angle.jl")
 include("find_neighbors.jl")
+include("find_quad.jl")
 
 # include("utilize.jl")
 # include("get_fractional.jl")
