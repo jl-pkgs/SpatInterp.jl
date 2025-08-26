@@ -11,7 +11,7 @@ end
 # nearest_per_quadrant
 function find_quad(
   source::AbstractVector{Point{2,T}}, out_x::T, out_y::T,
-  index::AbstractVector, angle::V, dist::V, weight::V) where {
+  index::AbstractVector, angle::V, dist::V, weight::V; m::Int=2) where {
   T<:Real,V<:AbstractVector{T}}
 
   idxq = zeros(Int, 4)         # 没有点 → 0
@@ -41,7 +41,8 @@ function find_quad(
     wq[3] = (1 - s) * t
     wq[4] = s * t
   else
-    wq = wq ./ sum(wq) # 采用原始idw权重
+    wq = @.(1 / distq^m) # 不足4点时，退化为idw插值
+    wq .= wk ./ sum(wk)
   end
   return idxq, distq, angq, wq  # 长度为4
 end
@@ -52,8 +53,6 @@ function find_quad(neighbor::Neighbor{FT,3}) where {FT}
   neighbor4 = Neighbor(4, neighbor.dims; source, lon, lat) # 4象限邻居
   (; count, index, dist, angle, weight) = neighbor4
   nlon, nlat = size(count)
-
-  @show typeof(source)
 
   @views @inbounds for i in 1:nlon, j in 1:nlat
     n = neighbor.count[i, j]
