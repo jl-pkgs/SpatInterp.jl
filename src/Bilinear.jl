@@ -2,7 +2,9 @@ module Bilinear
 
 using GeometryBasics
 using Parameters
-using SpatRasters: SpatRaster
+using SpatRasters: SpatRaster, st_dims
+using Distances: Haversine
+using NearestNeighbors
 
 
 export Point

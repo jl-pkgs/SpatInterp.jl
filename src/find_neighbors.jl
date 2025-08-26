@@ -1,5 +1,8 @@
+export Neighbor, find_neighbor
+
+
 @with_kw struct Neighbor{FT,N}
-  nmax::Int = 20
+  nmax::Int = 24
   dims::Tuple = ()
   count::AbstractArray{Integer} = zeros(Int, dims...)
   index::AbstractArray{Integer,N} = zeros(Int, dims..., nmax)
