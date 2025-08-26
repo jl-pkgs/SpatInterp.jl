@@ -1,4 +1,4 @@
-using Bilinear, Test
+using SpatInterp, Test
 import SpatRasters
 using SpatRasters: bbox, make_rast, st_dims
 using RTableTools, Statistics

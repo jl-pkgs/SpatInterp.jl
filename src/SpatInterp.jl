@@ -1,4 +1,4 @@
-module Bilinear
+module SpatInterp
 
 using GeometryBasics
 using Parameters
@@ -30,4 +30,4 @@ include("find_quad.jl")
 # include("solve_quadratic.jl")
 # include("get_fractional.jl")
 
-end # module Bilinear
+end # module SpatInterp

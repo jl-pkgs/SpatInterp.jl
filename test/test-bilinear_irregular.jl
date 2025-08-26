@@ -1,4 +1,4 @@
-using Bilinear, Test
+using SpatInterp, Test
 
 # p1 = sf.Point(-1.5, 1.2)  # Upper left
 # p2 = sf.Point(1.0, 1.0)   # Upepr right

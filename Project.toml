@@ -1,4 +1,4 @@
-name = "Bilinear"
+name = "SpatInterp"
 uuid = "b4b11043-bca8-43d4-9f2c-54842c74f03c"
 authors = ["Dongdong Kong <kongdd@users.noreply.github.com>"]
 version = "0.1.0"

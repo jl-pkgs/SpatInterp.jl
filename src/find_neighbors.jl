@@ -11,10 +11,13 @@ export Neighbor, find_neighbor
 
   count::AbstractArray{Integer} = zeros(Int, dims...)
   index::AbstractArray{Integer,N} = zeros(Int, dims..., nmax)
+  
   "distance (km)"
   dist::AbstractArray{FT,N} = zeros(FT, dims..., nmax)
+  
   "azimuth angle (in radian, degree, 0-360), N: 0°, E: 90°"
   angle::AbstractArray{FT,N} = zeros(FT, dims..., nmax)
+  
   weight::AbstractArray{FT,N} = zeros(FT, dims..., nmax)
 end
 

@@ -1,4 +1,4 @@
-using Bilinear, Test
+using SpatInterp, Test
 
 @testset "azimuth" begin
   @test angle_azimuth_sphere([0, 0], [0, 1]) == 0    # 正北，0
