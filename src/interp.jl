@@ -1,10 +1,12 @@
-function interp_weight(neighbor::Neighbor{T,N}, y::AbstractArray{T}, target::SpatRaster;
+# - `Y`: [n_source, ntime]
+function interp_weight(neighbor::Neighbor{T,N}, Y::AbstractArray{T};
   progress=true, ignored...) where {T<:AbstractFloat,N}
-
-  ntime = size(y, 2)
-  lon, lat = st_dims(target)
+  
+  (; lon, lat) = neighbor
   nlon, nlat = length(lon), length(lat)
-
+  ntime = size(Y, 2)
+  b = st_bbox(lon, lat)
+  
   # 综合考虑 T1 和 T2，选择合适的计算类型
   # T = promote_type(T1, T2)
   R = zeros(T, nlon, nlat, ntime)
@@ -19,12 +21,12 @@ function interp_weight(neighbor::Neighbor{T,N}, y::AbstractArray{T}, target::Spa
       n_control = count[i, j]
       inds = @view index[i, j, 1:n_control]
       ws = @view weight[i, j, 1:n_control]
-      _Y = @view y[inds, :] # target
+      _Y = @view Y[inds, :] # target
       _Z = @view R[i, j, :]
       _weighted_mean!(_Z, ws, _Y)
     end
   end
-  rast(R, target)
+  rast(R, b)
 end
 
 

@@ -30,6 +30,7 @@ function find_quad(
       wq[q] = weight[j]
     end
   end
+  
   n = sum(idxq .!== 0)
   t = s = T(0)
   if n == 4
@@ -50,6 +51,15 @@ function find_quad(
   if n < 4 || isnan(t + s) #
     wq = @.(1 / distq^m) # 不足4点，或bilinear求解失败时; 退化为idw插值
     wq .= wq ./ sum(wq)
+  end
+
+  # 最后需要进行排序
+  if n < 4
+    I = sortperm(idxq, rev=true) # 查找到的在前
+    idxq = idxq[I]
+    distq = distq[I]
+    angq = angq[I]
+    wq = wq[I]
   end
   return idxq, distq, angq, wq  # 长度为4
 end

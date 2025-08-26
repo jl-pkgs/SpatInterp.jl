@@ -39,10 +39,9 @@ radius = fast ? cellsize * 10 : 4 * 5
 
 @time neighbor = find_neighbor(target, X; nmax=36, fast, radius, do_angle=true)
 neighbor4 = find_quad(neighbor)
-@time res = interp_weight(neighbor4, Z, target)
+@time res = interp_weight(neighbor4, Z)
 
 # sum(isnan.(res.A)) / prod(size(res)) # 27.7%的NaN
-
 
 begin
   fig = Figure(; size=(1500, 600))
@@ -51,10 +50,8 @@ begin
   fig
 end
 
-
 ## 选择其中一个进行查看
 sum(isnan.(neighbor4.weight)) / prod(size(res)) # 27.7%的NaN
-
 
 begin
   (; count, weight, dist) = neighbor4
