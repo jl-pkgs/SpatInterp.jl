@@ -6,7 +6,6 @@ version = "0.1.0"
 [deps]
 Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
-GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 NearestNeighbors = "b8a86587-4115-5ab1-83bc-aa920d37bbce"
 Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
@@ -19,7 +18,6 @@ SpatRasters = {url = "https://github.com/jl-pkgs/SpatRasters.jl"}
 [compat]
 Distances = "0.10.12"
 DocStringExtensions = "0.9.5"
-GeometryBasics = "0.5.10"
 LinearAlgebra = "1.11.0"
 NearestNeighbors = "0.4.22"
 Parameters = "0.12.3"

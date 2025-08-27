@@ -5,7 +5,7 @@ export Neighbor, find_neighbor
   nmax::Int = 24
   dims::Tuple = ()
 
-  source::Union{Nothing,Vector{Point{2,FT}}} = nothing # donor points
+  source::Union{Nothing,Vector{Point{FT}}} = nothing # donor points
   lon::AbstractVector{FT} = 1:dims[1]                # target raster
   lat::AbstractVector{FT} = 1:dims[2]
 

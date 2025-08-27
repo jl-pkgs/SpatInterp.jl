@@ -10,7 +10,7 @@ end
 
 # nearest_per_quadrant
 function find_quad(
-  source::AbstractVector{Point{2,T}}, out_x::T, out_y::T,
+  source::AbstractVector{Point{T}}, out_x::T, out_y::T,
   index::AbstractVector, angle::V, dist::V, weight::V; m::Int=2) where {
   T<:Real,V<:AbstractVector{T}}
 

@@ -1,6 +1,5 @@
 module SpatInterp
 
-using GeometryBasics
 using Parameters
 using Distances: Haversine
 using NearestNeighbors
@@ -10,12 +9,11 @@ using DocStringExtensions
 
 using SpatRasters: SpatRaster, rast,
   st_coords, st_dims, meshgrid,
-  bbox, st_bbox, make_rast
+  bbox, st_bbox, make_rast, 
+  Point, Point3, st_points
 
 export SpatRaster, rast, bbox, make_rast
-export Point, st_points
-
-st_points(X::AbstractMatrix{T}) where {T} = map(p -> Point{2,T}(p[1], p[2]), eachrow(X))
+export st_points
 
 # @inline Base.getproperty(p::Point{T}, ::Symbol{Val{:x}}) where {T} = p[1]
 # @inline function Base.getproperty(p::Point{T}, s::Symbol) where {T}

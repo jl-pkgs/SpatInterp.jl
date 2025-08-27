@@ -12,7 +12,7 @@ end
 """
 获取不规则情况的分数距离
 """
-function frac_dist_irregular(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y::T) where {T<:Real,N,P<:Point{N,T}}
+function frac_dist_irregular(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y::T) where {T<:Real,P<:Point{T}}
   a, b, c = calc_abc(p1, p2, p3, p4, out_y, out_x)
   t = solve_quadratic(a, b, c)
   s = solve_another_frac_dist(t, p1.y, p3.y, p2.y, p4.y, out_y) # 注意p2和p3交换
@@ -21,7 +21,7 @@ end
 
 
 # vertical parallel
-function frac_dist_uprights_parallel(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y::T) where {T<:Real,N,P<:Point{N,T}}
+function frac_dist_uprights_parallel(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y::T) where {T<:Real,P<:Point{T}}
   a, b, c = calc_abc(p1, p3, p2, p4, out_y, out_x)
   s = solve_quadratic(a, b, c) # note diff from irregular
   t = solve_another_frac_dist(s, p1.y, p2.y, p3.y, p4.y, out_y) # note diff
@@ -29,7 +29,7 @@ function frac_dist_uprights_parallel(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y
 end
 
 # vertical and horizontal are parallel
-function frac_dist_parallellogram(p1::P, p2::P, p3::P, out_x::T, out_y::T) where {T<:Real,N,P<:Point{N,T}}
+function frac_dist_parallellogram(p1::P, p2::P, p3::P, out_x::T, out_y::T) where {T<:Real,P<:Point{T}}
   x_21 = p2.x - p1.x
   x_31 = p3.x - p1.x
   y_21 = p2.y - p1.y
@@ -44,7 +44,7 @@ function frac_dist_parallellogram(p1::P, p2::P, p3::P, out_x::T, out_y::T) where
 end
 
 
-function frac_dist(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y::T) where {T<:Real,N,P<:Point{N,T}}
+function frac_dist(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y::T) where {T<:Real,P<:Point{T}}
   t, s = frac_dist_irregular(p1, p2, p3, p4, out_x, out_y)
 
   # vertical parallel

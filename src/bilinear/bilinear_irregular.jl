@@ -4,7 +4,7 @@
 """
 计算二次方程系数
 """
-function calc_abc(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y::T) where {T<:Real,N,P<:Point{N,T}}
+function calc_abc(p1::P, p2::P, p3::P, p4::P, out_x::T, out_y::T) where {T<:Real,P<:Point{T}}
   # 参考点之间的经向分离
   x_21 = p2.x - p1.x
   x_31 = p3.x - p1.x
