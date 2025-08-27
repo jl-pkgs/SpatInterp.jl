@@ -3,3 +3,5 @@ Manifest.toml
 *.nc
 *.png
 *.jpg
+
+*debug*

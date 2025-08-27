@@ -20,12 +20,12 @@ st_points(X::AbstractMatrix{T}) where {T} = map(p -> Point{2, T}(p[1], p[2]), ea
 #   return getfield(p, s)  # fallback for other fields
 # end
 
-include("bilinear_irregular.jl")
 include("angle.jl")
-
-include("frac_dist.jl")
 include("find_neighbors.jl")
-include("find_quad.jl")
+
+include("bilinear/bilinear_irregular.jl")
+include("bilinear/frac_dist.jl")
+include("bilinear/find_quad.jl")
 
 include("interp.jl")
 
