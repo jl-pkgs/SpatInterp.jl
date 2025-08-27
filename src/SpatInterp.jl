@@ -2,7 +2,7 @@ module SpatInterp
 
 using GeometryBasics
 using Parameters
-using SpatRasters: SpatRaster, rast, st_coords, st_dims, st_bbox
+using SpatRasters: SpatRaster, rast, bbox, st_coords, st_dims, st_bbox
 using Distances: Haversine
 using NearestNeighbors
 using Base.Threads
