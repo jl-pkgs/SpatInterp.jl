@@ -13,13 +13,13 @@ using SpatInterp, Test
 end
 
 
-# @testset "_weight_adw" begin
-#   dist = [10, 20, 40, 40, 50.]
-#   angle1 = [0, 10, 10, 180, 180.]
-#   angle0 = [0, 0, 0, 0, 0.]
-#   w0 = _weight_adw(dist, angle0)
-#   w1 = _weight_adw(dist, angle1)
-#   @test w1[4] > w1[3] # 对角获取更大的权重 
-#   @test sum(w0) ≈ 1
-#   @test sum(w1) ≈ 1
-# end
+@testset "_weight_adw" begin
+  dist = [10, 20, 40, 40, 50.]
+  angle1 = [0, 10, 10, 180, 180.]
+  angle0 = [0, 0, 0, 0, 0.]
+  w0 = _weight_adw(dist, angle0)
+  w1 = _weight_adw(dist, angle1)
+  @test w1[4] > w1[3] # 对角获取更大的权重 
+  @test sum(w0) ≈ 1
+  @test sum(w1) ≈ 1
+end

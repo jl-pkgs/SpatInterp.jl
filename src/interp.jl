@@ -1,4 +1,6 @@
 export interp
+export interp_weight, interp_nearest
+
 
 """
     interp(ra::SpatRaster, target::SpatRaster;
@@ -142,5 +144,3 @@ function _weighted_mean!(Z::AbstractVector{T}, ws::AbstractVector{T}, Y::Abstrac
     Z[k] = ifelse(∑w > T(0), ∑ / ∑w, T(0))
   end
 end
-
-export interp_weight

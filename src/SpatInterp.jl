@@ -2,17 +2,20 @@ module SpatInterp
 
 using GeometryBasics
 using Parameters
-using SpatRasters: SpatRaster, rast, bbox, st_coords, st_dims, st_bbox
 using Distances: Haversine
 using NearestNeighbors
 using Base.Threads
 using ProgressMeter
-
 using DocStringExtensions
 
+using SpatRasters: SpatRaster, rast,
+  st_coords, st_dims, meshgrid,
+  bbox, st_bbox, make_rast
+
+export SpatRaster, rast, bbox, make_rast
 export Point, st_points
 
-st_points(X::AbstractMatrix{T}) where {T} = map(p -> Point{2, T}(p[1], p[2]), eachrow(X))
+st_points(X::AbstractMatrix{T}) where {T} = map(p -> Point{2,T}(p[1], p[2]), eachrow(X))
 
 # @inline Base.getproperty(p::Point{T}, ::Symbol{Val{:x}}) where {T} = p[1]
 # @inline function Base.getproperty(p::Point{T}, s::Symbol) where {T}
@@ -25,6 +28,7 @@ st_points(X::AbstractMatrix{T}) where {T} = map(p -> Point{2, T}(p[1], p[2]), ea
 include("angle.jl")
 include("distance.jl")
 include("find_neighbors.jl")
+include("weights.jl")
 
 include("bilinear/bilinear_helper.jl")
 include("bilinear/bilinear.jl")
