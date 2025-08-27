@@ -2,11 +2,13 @@ module SpatInterp
 
 using GeometryBasics
 using Parameters
-using SpatRasters: SpatRaster, rast, st_dims, st_bbox
+using SpatRasters: SpatRaster, rast, st_coords, st_dims, st_bbox
 using Distances: Haversine
 using NearestNeighbors
 using Base.Threads
 using ProgressMeter
+
+using DocStringExtensions
 
 export Point, st_points
 
@@ -24,6 +26,8 @@ include("angle.jl")
 include("distance.jl")
 include("find_neighbors.jl")
 
+include("bilinear/bilinear_helper.jl")
+include("bilinear/bilinear.jl")
 include("bilinear/bilinear_irregular.jl")
 include("bilinear/frac_dist.jl")
 include("bilinear/find_quad.jl")
