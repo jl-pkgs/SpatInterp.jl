@@ -1,5 +1,13 @@
 using SpatInterp, Test
 
+@testset "angle2quad" begin
+  @test angle2quad(45) == 2
+  @test angle2quad(135) == 4
+  @test angle2quad(135 + 90 * 1) == 3
+  @test angle2quad(135 + 90 * 2) == 1
+end
+
+
 # p1 = sf.Point(-1.5, 1.2)  # Upper left
 # p2 = sf.Point(1.0, 1.0)   # Upepr right
 # p3 = sf.Point(-1.2, -1.4) # Lower left
