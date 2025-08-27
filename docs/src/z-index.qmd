@@ -1,0 +1,20 @@
+---
+number-depth: 2
+---
+
+# Reference
+
+_Docstrings for SpatInerp._
+
+```{julia}
+#| echo: false
+#| output: false
+using DocumenterQuarto
+using SpatInerp
+```
+
+```{julia}
+#| echo: false
+#| output: asis
+# DocumenterQuarto.autodoc(SpatInerp)
+```
